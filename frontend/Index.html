@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Grozy - Productos</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header>
+    <h1>Grozy - Lista de Productos</h1>
+</header>
+
+<main class="container" id="product-list">
+    <!-- Los productos se cargarán aquí -->
+</main>
+
+<script>
+    async function fetchProductos() {
+        try {
+            const response = await fetch("http://127.0.0.1:8000/productos");
+            const productos = await response.json();
+
+            const productList = document.getElementById('product-list');
+            productos.forEach(producto => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <img src="${producto.imagen_url}" alt="${producto.nombre}" class="producto-imagen" />
+                    <h2>${producto.nombre}</h2>
+                    <p>Precio: $${producto.precio}</p>
+                    <a href="${producto.enlace}" class="ver-producto" target="_blank">Ver producto</a>
+                    <p class="supermercado">${producto.supermercado}</p>
+                `;
+                productList.appendChild(card);
+            });
+        } catch (error) {
+            console.error('Error al obtener los productos:', error);
+        }
+    }
+
+    window.onload = fetchProductos;
+</script>
+
+</body>
+</html>
